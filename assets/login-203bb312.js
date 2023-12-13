@@ -1,0 +1,1 @@
+import{d as s,u as t,c,a as o,F as i,o as r,g as l,f as g}from"./index-006339bb.js";const f=s({__name:"login",setup(u){const e=t(),a=async()=>{await l(),console.log(3123123),await e.push("/index")},n=()=>{g()};return(p,_)=>(r(),c(i,null,[o("div",{onClick:a},"使用谷歌登录"),o("div",{onClick:n},"Facebook")],64))}});export{f as default};
