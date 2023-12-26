@@ -10,6 +10,7 @@
     <a href="https://www.facebook.com/dialog/pay?app_id=1057955672016858&redirect_uri=https%3A%2F%2F1343201012.github.io%2F&order_info=%7B%22item_id%22%3A%221a%22%7D">支付</a>
 
     <button onclick="status()">登录状态</button>
+    <button onclick="zf()">支付2</button>
 
     <script>
         window.fbAsyncInit = function() {
@@ -23,6 +24,12 @@
         function status(){
             FB.getLoginStatus((response)=>{
                 console.log(response);
+            })
+        }
+
+        function zf(){
+            FB.FBPaymentAuthorizationResult((res)=>{
+                console.log(res);
             })
         }
     </script>
