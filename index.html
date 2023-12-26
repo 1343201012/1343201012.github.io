@@ -5,14 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
 </head>
 <body>
     <a href="https://www.facebook.com/dialog/pay?app_id=1057955672016858&redirect_uri=https%3A%2F%2F1343201012.github.io%2F&order_info=%7B%22item_id%22%3A%221a%22%7D">支付</a>
+    <a href="https://www.facebook.com/v18.0/dialog/oauth?response_type=token&client_id=1057955672016858&auth_type=rerequest&scope=instagram_shopping_tag_products%2Cpublic_profile&redirect_uri=https://1343201012.github.io/">登录</a>
 
     <button onclick="status()">登录状态</button>
     <button onclick="zf()">支付2</button>
+    <button onclick="logout()"></button>
 
     <script>
+         window.addEventListener('load',()=>{
+            if(!location.hash) return;
+            let data = {
+                fields:'id,name'
+            };
+            location.hash.replace(/#/,'').split('&').forEach(item=>{
+                data[item.split('=')[0]] = item.split('=')[1];
+            })
+            axios({
+                url:'https://graph.facebook.com/v18.0/me',
+                params:data
+            }).then(res=>{
+                console.log(res);
+            })
+        })
+
         window.fbAsyncInit = function() {
             FB.init({
             appId : '1057955672016858',
@@ -30,6 +49,13 @@
         function zf(){
             FB.FBPaymentAuthorizationResult((res)=>{
                 console.log(res);
+            })
+        }
+
+        function logout(){
+            FB.logout((response)=>{
+                console.log('退出成功');
+                console.log(response);
             })
         }
     </script>
