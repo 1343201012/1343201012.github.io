@@ -6,32 +6,20 @@
     <title>Document</title>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+    <script src="https://static.xx.fbcdn.net/payments_sdk/v1/metapay_sdk.js"></script>
 </head>
 <body>
     <a href="https://www.facebook.com/dialog/pay?app_id=1057955672016858&redirect_uri=https%3A%2F%2F1343201012.github.io%2F&order_info=%7B%22item_id%22%3A%221a%22%7D">支付</a>
     <a href="https://www.facebook.com/v18.0/dialog/oauth?response_type=token&client_id=1057955672016858&auth_type=rerequest&scope=instagram_shopping_tag_products%2Cpublic_profile&redirect_uri=https://1343201012.github.io/">登录</a>
 
     <button onclick="status()">登录状态</button>
-    <button onclick="zf()">支付2</button>
+    <!-- <button onclick="zf()">支付2</button> -->
     <button onclick="logout()"></button>
     <button onclick="login()">登录</button>
+    <div id="btn_container"></div>
+    <button onclick="order()">订单</button>
 
     <script>
-         window.addEventListener('load',()=>{
-            if(!location.hash) return;
-            let data = {
-                fields:'id,name'
-            };
-            location.hash.replace(/#/,'').split('&').forEach(item=>{
-                data[item.split('=')[0]] = item.split('=')[1];
-            })
-            axios({
-                url:'https://graph.facebook.com/v18.0/me',
-                params:data
-            }).then(res=>{
-                console.log(res);
-            })
-        })
 
         window.fbAsyncInit = function() {
             FB.init({
@@ -72,6 +60,113 @@
                 }
             })
         }
+
+
+    const paymentClient = new window.metapay.PaymentClient('1.0');
+
+async function cc()
+{
+    console.log(34234234);
+  const availability = await paymentClient.getAvailability();
+  console.log(availability);
+  
+  if (availability === 'AVAILABLE')
+  {
+    // display the Meta Pay button
+    await paymentClient.renderButton
+    (
+      '#btn_container',
+      buildPaymentRequest,
+      responsePromise => onMetaPayClick(responsePromise),
+      {theme: 'light'}
+    );
+
+    async function onMetaPayClick(responsePromise)
+    {
+      const response = await responsePromise;
+
+      try
+      {
+        // process payment by sending response.container to partner
+        // ...
+
+        // dismiss the Meta Pay interface with a successful signal
+        await response.complete(PaymentComplete.success);
+      }
+      catch (err)
+      {
+        // error handling
+        // ...
+  
+        // dismiss the Meta Pay interface with a failure signal
+        await response.complete(PaymentComplete.fail);
+      }
+
+      // more code
+      // ...
+    };
+  }
+  else
+  {
+    console.log('Meta Pay is not available');
+  }
+};
+
+window.addEventListener('load',()=>{
+    cc();
+            if(!location.hash) return;
+            let data = {
+                fields:'id,name'
+            };
+            location.hash.replace(/#/,'').split('&').forEach(item=>{
+                data[item.split('=')[0]] = item.split('=')[1];
+            })
+            axios({
+                url:'https://graph.facebook.com/v18.0/me',
+                params:data
+            }).then(res=>{
+                console.log(res);
+            })
+    })
+
+
+    function buildPaymentRequest() {
+        return{
+            paymentDetails:{total: {label: 'Board Game', amount: {value: '19.99', currency: 'USD'}}},
+            paymentOptions:{
+                requestPayerName: true,
+                requestPayerEmail: false,
+                requestPayerPhone: false,
+                requestShipping: false,
+                allowOfferCodes: false
+            },
+            paymentConfiguration:{
+                mode: 'TEST',
+                partnerId: '123123',
+                partnerMerchantId: '<your merchant id>',
+                acquirerCountryCode: 'US',
+                supportedContainers: {
+                            'basic-card-v1': {}, // no configurations, use {}
+                        },
+                ontainerContext: '<a unique identifier for the payment>',
+            }
+        }
+    }
+
+    function order(){
+        FB.api(
+    "/{page-id}/commerce_orders",
+    {
+        "fields": "id,buyer_details,channel,merchant_order_id,order_status"
+    },
+    function (response) {
+        console.log(response);
+      if (response && !response.error) {
+        /* handle the result */
+      }
+    }
+);
+    }
     </script>
 </body>
 </html>
