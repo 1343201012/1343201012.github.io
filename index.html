@@ -13,7 +13,8 @@
 
     <button onclick="status()">登录状态</button>
     <button onclick="zf()">支付2</button>
-    <button onclick="logout()">退出</button>
+    <button onclick="logout()"></button>
+    <button onclick="login()">登录</button>
 
     <script>
          window.addEventListener('load',()=>{
@@ -56,6 +57,19 @@
             FB.logout((response)=>{
                 console.log('退出成功');
                 console.log(response);
+            })
+        }
+
+        function login(){
+            FB.login((response)=>{
+                console.log(response);
+                if(response.authResponse){
+                    FB.api('/me',(info)=>{
+                        console.log(info);
+                    })
+                } else {
+                    console.log(231313);
+                }
             })
         }
     </script>
