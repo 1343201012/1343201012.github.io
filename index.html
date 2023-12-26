@@ -4,57 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 </head>
 <body>
-    <h2>Buy something...</h2>
-    <button onclick="buy()">Buy2</button>
-    <div id="fb-ui-return-data"></div>
-    <div id="fb-root"></div>
+    <a href="https://www.facebook.com/dialog/pay?app_id=1057955672016858&redirect_uri=https%3A%2F%2F1343201012.github.io%2F&order_info=%7B%22item_id%22%3A%221a%22%7D">支付</a>
 
-    <script src="https://connect.facebook.net/en_US/all.js"></script>
+    <button onclick="status()">登录状态</button>
 
     <script>
-        FB.init({appId: "1057955672016858", status: true, cookie: true});
-        function buy() {
-            var obj = {
-                method: 'pay',
-                action: 'buy_credits',
-                order_info: {'item_id': '1a'},
-                dev_purchase_params: {'oscif': true}
-            };
+        window.fbAsyncInit = function() {
+            FB.init({
+            appId : '1057955672016858',
+            xfbml : true,
+            version : 'v18.0'
+            });
+        };
 
-            FB.ui(obj,js_callback);
+        function status(){
+            FB.getLoginStatus((response)=>{
+                console.log(response);
+            })
         }
-
-        var js_callback = function(data) {
-        if (data['order_id']) {　　　　　　// 当订单成功的时候，会返回商品在FB平台的商品id
-          // Facebook only returns an order_id if you've implemented
-          // the Credits Callback payments_status_update and settled
-          // the user's placed order.
-
-          // Notify the user that the purchased item has been delivered
-          // without a complete reload of the game.
-          write_callback_data(
-                    "<br><b>Transaction Completed!</b> </br></br>"
-                    + "Data returned from Facebook: </br>"
-                    + "Order ID: " + data['order_id'] + "</br>"
-                    + "Status: " + data['status']);
-        } else if (data['error_code']) {　　　　// 出现某X非支付成功操作的时候，例如：点击支付窗口的取消按钮
-          // Appropriately alert the user.
-          write_callback_data(
-                    "<br><b>Transaction Failed!</b> </br></br>"
-                    + "Error message returned from Facebook:</br>"
-                    + data['error_code'] + " - "
-                    + data['error_message']);
-        } else {　　　　　　　　　　　　// 其他未知名错误
-          // Appropriately alert the user.
-          write_callback_data("<br><b>Transaction failed!</b>");
-        }
-      };
-
-      function write_callback_data(str) {
-        document.getElementById('fb-ui-return-data').innerHTML=str;
-      }
     </script>
 </body>
 </html>
