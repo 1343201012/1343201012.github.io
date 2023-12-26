@@ -1,22 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="icon" type="image/svg+xml" href="./vite.svg"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="google-signin-client_id" content="585374910303-hsnl6jtmgld22tt421l85arbc9d97oqs.apps.googleusercontent.com">
-    <title>Vite + Vue + TS</title>
-<!--    <script src="https://accounts.google.com/gsi/client" async></script>-->
-  <script type="module" crossorigin src="./assets/index-006339bb.js"></script>
-  <link rel="stylesheet" href="./assets/index-e3b0c442.css">
-  <script type="module">import.meta.url;import("_").catch(()=>1);async function* g(){};if(location.protocol!="file:"){window.__vite_is_modern_browser=true}</script>
-  <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
 <body>
-<div id="app"></div>
 
-  <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
-  <script nomodule crossorigin id="vite-legacy-polyfill" src="./assets/polyfills-legacy-66344f96.js"></script>
-  <script nomodule crossorigin id="vite-legacy-entry" data-src="./assets/index-legacy-80af8e99.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./axios.js"></script>
+</head>
+<body>
+    <a href="https://www.facebook.com/v18.0/dialog/oauth?response_type=token&client_id=1057955672016858&auth_type=rerequest&scope=instagram_shopping_tag_products%2Cpublic_profile&redirect_uri=https://1343201012.github.io/">1</a>
+
+    <script>
+        window.addEventListener('load',()=>{
+            if(!location.hash) return;
+            let data = {
+                fields:'id,name'
+            };
+            location.hash.replace(/#/,'').split('&').forEach(item=>{
+                data[item.split('=')[0]] = item.split('=')[1];
+            })
+            axios({
+                url:'https://graph.facebook.com/v18.0/me',
+                params:data
+            }).then(res=>{
+                console.log(res);
+            })
+        })
+    </script>
 </body>
 </html>
